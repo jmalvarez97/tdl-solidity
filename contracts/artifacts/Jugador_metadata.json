@@ -39,6 +39,25 @@
 				"inputs": [
 					{
 						"internalType": "string",
+						"name": "l",
+						"type": "string"
+					}
+				],
+				"name": "apostarLetra",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
 						"name": "_str",
 						"type": "string"
 					}
@@ -144,11 +163,11 @@
 			]
 		},
 		"contracts/Jugador.sol": {
-			"keccak256": "0xec61bdcfc7d940856ab29e0bec7ae47be8cb1d311bbc14a5321a9ebd07d3ae77",
+			"keccak256": "0x822515185df169f086a9f6bf89a0f9bfe8051459dcaea9cd8b7ad89986e0e7b1",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://c6327e94217b141f06bd99157957e1c76bf86e922e49dcf93fb318fbf5bfc549",
-				"dweb:/ipfs/QmYyznRmt4dfCt1N3ga2Udk31w6PzWzQY33CCueBkSJvJb"
+				"bzz-raw://5b25f2f2b111393c68242a282820cd5152cefd521036301f03c37c39861449a7",
+				"dweb:/ipfs/QmaqcQEek9Mh6Cuykkx2Fsymiw6dM4i3GrP8vctRXBXSzw"
 			]
 		},
 		"contracts/Ownable.sol": {
