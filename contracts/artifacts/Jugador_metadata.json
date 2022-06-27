@@ -8,7 +8,7 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
+						"internalType": "address payable",
 						"name": "_cont",
 						"type": "address"
 					}
@@ -55,6 +55,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "balanceC",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -95,6 +108,19 @@
 			},
 			{
 				"inputs": [],
+				"name": "hasbuBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
 				"name": "owner",
 				"outputs": [
 					{
@@ -104,6 +130,13 @@
 					}
 				],
 				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "r",
+				"outputs": [],
+				"stateMutability": "payable",
 				"type": "function"
 			},
 			{
@@ -155,19 +188,19 @@
 	},
 	"sources": {
 		"contracts/Juego.sol": {
-			"keccak256": "0xfabc781a7756f070311a9d510d8be1118af141e7cb2ba785fc133f0431be8997",
+			"keccak256": "0x0296e0f1b1de0cb2af3a9539b77e997e045a73293640f4d28a5a4cb6664ec2ce",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://885fedfe8bc6bcd8a3951ea9a9eb0011fee10f25160ed3678edbb09ebb69b698",
-				"dweb:/ipfs/QmQGtonEpC6DnoBu4dX5MK9crM3hjk8LSCueCPhJcrjPgz"
+				"bzz-raw://e7dbe580a4e591dba49c9cc600f5b52a8e98193a39dd2f49c4ecdb08fd7b733d",
+				"dweb:/ipfs/QmWrpQBTee61SX8gDoVDkfVzZrVmz6dw4N4M19eQre9B48"
 			]
 		},
 		"contracts/Jugador.sol": {
-			"keccak256": "0x822515185df169f086a9f6bf89a0f9bfe8051459dcaea9cd8b7ad89986e0e7b1",
+			"keccak256": "0x6af8223e7f63685d7a4e4b7362a3c1e3bb7325a2a248b72ac18f3ad8b535fa7b",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://5b25f2f2b111393c68242a282820cd5152cefd521036301f03c37c39861449a7",
-				"dweb:/ipfs/QmaqcQEek9Mh6Cuykkx2Fsymiw6dM4i3GrP8vctRXBXSzw"
+				"bzz-raw://3015d1848a7105b8a15f50ed347c75d6ff3027567281ed907342d101124be6b8",
+				"dweb:/ipfs/QmYXX1BbCMuqpZWfCM3iAzsJf1c7n79NnTWnxQCf4CZfk5"
 			]
 		},
 		"contracts/Ownable.sol": {
@@ -184,6 +217,14 @@
 			"urls": [
 				"bzz-raw://7be393c0260681640946320db9bd6b47899b0afb3c60a33f0fb37b18239847c3",
 				"dweb:/ipfs/QmXKmwFJzhEpM6s1yxYr3uSLiwb5jGSw9GPqUgG7KLRuEA"
+			]
+		},
+		"contracts/erc20.sol": {
+			"keccak256": "0xb4b36ae57c04767594f26665b4351157566df7d7482f02536420a300e6242ab1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bdaa1684167bb302550b243e6e69826870e63f33d68435e25c997bef6b15f01d",
+				"dweb:/ipfs/QmWgBhRi87xTbnY6t5tonLSGQs6hZHuF2TJYqVQUnowsj1"
 			]
 		}
 	},

@@ -65,6 +65,25 @@
 				],
 				"stateMutability": "nonpayable",
 				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					}
+				],
+				"name": "hasbuBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
 			}
 		],
 		"devdoc": {
@@ -95,19 +114,19 @@
 	},
 	"sources": {
 		"contracts/Juego.sol": {
-			"keccak256": "0xfabc781a7756f070311a9d510d8be1118af141e7cb2ba785fc133f0431be8997",
+			"keccak256": "0x0296e0f1b1de0cb2af3a9539b77e997e045a73293640f4d28a5a4cb6664ec2ce",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://885fedfe8bc6bcd8a3951ea9a9eb0011fee10f25160ed3678edbb09ebb69b698",
-				"dweb:/ipfs/QmQGtonEpC6DnoBu4dX5MK9crM3hjk8LSCueCPhJcrjPgz"
+				"bzz-raw://e7dbe580a4e591dba49c9cc600f5b52a8e98193a39dd2f49c4ecdb08fd7b733d",
+				"dweb:/ipfs/QmWrpQBTee61SX8gDoVDkfVzZrVmz6dw4N4M19eQre9B48"
 			]
 		},
 		"contracts/Jugador.sol": {
-			"keccak256": "0xec61bdcfc7d940856ab29e0bec7ae47be8cb1d311bbc14a5321a9ebd07d3ae77",
+			"keccak256": "0x5534ff910e4cbb0a3b6bb5f5a5b85b08294cfacaf6efda82675925a8ef987516",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://c6327e94217b141f06bd99157957e1c76bf86e922e49dcf93fb318fbf5bfc549",
-				"dweb:/ipfs/QmYyznRmt4dfCt1N3ga2Udk31w6PzWzQY33CCueBkSJvJb"
+				"bzz-raw://4e9a31353553805aa4d1c5fab46469edf57f46d2cbd612280478cd75877c9ecd",
+				"dweb:/ipfs/Qmben2vpRARDsDNX18GCEukrSUWLSq2gTcCpuu6znLeqSq"
 			]
 		},
 		"contracts/Ownable.sol": {
@@ -124,6 +143,14 @@
 			"urls": [
 				"bzz-raw://7be393c0260681640946320db9bd6b47899b0afb3c60a33f0fb37b18239847c3",
 				"dweb:/ipfs/QmXKmwFJzhEpM6s1yxYr3uSLiwb5jGSw9GPqUgG7KLRuEA"
+			]
+		},
+		"contracts/erc20.sol": {
+			"keccak256": "0xb4b36ae57c04767594f26665b4351157566df7d7482f02536420a300e6242ab1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://bdaa1684167bb302550b243e6e69826870e63f33d68435e25c997bef6b15f01d",
+				"dweb:/ipfs/QmWgBhRi87xTbnY6t5tonLSGQs6hZHuF2TJYqVQUnowsj1"
 			]
 		}
 	},
