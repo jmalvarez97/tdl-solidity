@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.5.0  <0.9.0;
+pragma solidity >=0.6.0  <0.9.0;
 // Nexo ente juego y palabra
 // ownable
 import "./Juego.sol";
@@ -7,13 +7,17 @@ import "./Ownable.sol";
 import "./Word.sol";
 
 
-contract Jugador is Ownable{
+
+
+contract Jugador is Ownable {
 
     uint id;
     Juego juego;
     Word actual;
-
-    constructor(address _cont) public{
+    address payable contJuego;
+    
+    constructor(address payable _cont){
+        contJuego = _cont;
         juego = Juego(_cont);
         id = juego.crearJugador();
         actual = new Word("");
@@ -30,8 +34,6 @@ contract Jugador is Ownable{
 
     function elegirPalabra() public onlyOwner returns (Word){
         Word word  = juego.elegirPalabra(id);
-        // se supone que si el jugador elige una letra, el jugador ya puesta, aca iria
-        // una linea donde le pasa unos tokens al juego
         actual = word;
         return word;
 
@@ -44,6 +46,15 @@ contract Jugador is Ownable{
     }
 
 
+    // balance de hasbuCoins
+    function hasbuBalance() public view onlyOwner returns (uint){
+        return juego.hasbuBalance(id);
+    }
 
+    function balanceC() public view onlyOwner returns (uint){
+        return address(this).balance;
+    }
+
+   
 
 }
