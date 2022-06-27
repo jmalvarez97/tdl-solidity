@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  </script>
+  <link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+</head>
+
+<body class="bg-secondary m-2">
+<div id="principal" class="container bg-white">
+  <div class="row justify-content-center titulo-principal text-white">
+    <h1 class="h1">AHORCADO</h1>
+  </div>
+  <div class="row">
+    <div class="container">
+      <div class="row justify-content-center">
+        <img id="imagen_ahorcado" src="img/ahorcado.png" class="estilo-imagen" alt="Imagen juego ahorcado">
+      </div>
+      <div id="palabra" class="row justify-content-center contenedor-letras-secreto">
+      </div>
+      <div class="row">
+        <div class="container my-2 w-25">
+          <div class="row justify-content-center rounded-top bg-morado text-white">
+            Letras no acertadas
+          </div>
+          <div id="letras_fallidas"
+               class="row align-content-center justify-content-center borde-morado rounded-bottom contenedor-letras">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row justify-content-center bg-dark">
+    <div class="p-2 w-50">
+      <div class="row">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+                                <span class="input-group-text ancho-etiqueta bg-success text-white"
+                                      id="label_palabra_secreta">Palabra:</span>
+          </div>
+          <input id="palabra_secreta" type="text" class="form-control" placeholder="Palabra secreta"
+                 aria-describedby="label_palabra_secreta">
+          <button id="boton_iniciar" class="btn btn-success ancho-boton">Iniciar</button>
+        </div>
+        <br>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+                                <span class="input-group-text ancho-etiqueta bg-primary text-white"
+                                      id="label_probar_letra">Letra:</span>
+          </div>
+          <input id="probar_letra" type="text" class="form-control" placeholder="Escribi una letra"
+                 aria-describedby="label_probar_letra" maxlength="1" minlength="1" disabled>
+          <button id="boton_probar" class="btn btn-primary ancho-boton" disabled>Probar</button>
+        </div>
+        <br>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text ancho-etiqueta bg-warning" id="label_adivinar">¿Arriesgas?</span>
+          </div>
+          <input id="adivinar" type="text" class="form-control" placeholder="Arriesgar palabra"
+                 aria-describedby="label_adivinar" disabled>
+          <button id="boton_adivinar" class="btn btn-warning ancho-boton" disabled>Adivinar</button>
+        </div>
+        <br>
+      </div>
+      <div class="row justify-content-center">
+        <button id="boton_finalizar" class="btn btn-danger ancho-boton align-self-end">Reiniciar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+  <script src="/index.js"></script>
+  <script src="/web3.min.js"></script>
+  <script src="/truffle-contract.js"></script>
+  <script src="/bootstrap.min.js"></script>
+</body>
+</html>

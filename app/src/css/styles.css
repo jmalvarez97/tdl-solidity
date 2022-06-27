@@ -1,0 +1,63 @@
+div {
+    text-align:center;
+}
+
+.ancho-etiqueta {
+    width: 100px;
+}
+
+.ancho-boton {
+    width: 100px;
+}
+
+.contenedor-letras {
+    min-height: 30px;
+}
+
+.contenedor-letras-secreto {
+    min-height: 45px;
+}
+
+.titulo-principal {
+    background: #1f1f1f;
+    color: #ffffff;
+    text-align:center;
+}
+
+.letra {
+    background: #4bb7c8;
+    border-radius: 10px;
+    color: #fff;
+    display: inline-block;
+    height: 40px;
+    width: 35px;
+    text-align: center;
+    margin-left: 2.5px;
+    margin-right: 2.5px;
+    font-size: 25px;    
+}
+
+.espacio {
+    display: inline-block;    
+    width: 30px;    
+}
+
+.letra-gane {
+    background: #27a745;    
+}
+
+.letra-perdida {
+    background: #dc3645;
+}
+
+.estilo-imagen {
+    height: 290px;
+}
+
+.bg-morado {
+    background: #0baae9;
+}
+
+.borde-morado {
+    border: 1px solid #612daf;
+}
