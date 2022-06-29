@@ -15,5 +15,7 @@ npx hardhat help
 ```
 
 correr: 
+
 npm install (dep del front)
+
 yarn add hardhat @nomiclabs/hardhat-waffle ethereum-waffle chai @nomiclabs/hardhat-ethers ethers (dep de hardhat)

@@ -302,8 +302,17 @@ $(document).ready(function () {
   function finalizar() {
     inicializar();
   }
+/*
+  const hre = require("hardhat");
+  const { ethers } = require("ethers");
+  
+*/
+  
 
-  function main() {
+
+  async function main() {
+  
+
     inicializar();
     $('#boton_iniciar').click(iniciar);
     $('#boton_probar').click(probarLetra);
