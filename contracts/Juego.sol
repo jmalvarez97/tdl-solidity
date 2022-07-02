@@ -23,7 +23,7 @@ contract Juego{
         _;
     }
 
-    constructor(){
+    constructor() public{
         string[10] memory inits = ["mandato", "quizas", "ayer", "mientras", "soleado", "maravilla", "astuto", "raton", "mudanza", "llegando" ];
         for(uint i=0; i<inits.length; i++){
             _crearPalabra(inits[i], 0);
