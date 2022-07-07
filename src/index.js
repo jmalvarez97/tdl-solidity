@@ -1,24 +1,64 @@
-$(document).ready(function () {
+App = {
+  web3Provider: null,
+  contracts: {},
+  initWeb3: async function() {
+    if (window.ethereum) {
+      App.web3Provider = window.ethereum;
+      try {
+        await window.ethereum.enable();
+      } catch (error) {
+        console.error("User denied account access")
+      }
+    }
+    else if (window.web3) {
+      App.web3Provider = window.web3.currentProvider;
+    }
+    else {
+      App.web3Provider = new Web3.providers
+          .HttpProvider('http://localhost:8545');
+    }
+    web3 = new Web3(App.web3Provider);
+    return App.initContract();
+  },
 
+  initContract: function() {
+    $.getJSON("HasbuCoin.json", function(data) {
+      App.contracts.HasbuContract = TruffleContract(data);
+      App.contracts.HasbuContract.setProvider(App.web3Provider);
+      return App.init();
+    });
+  },
+
+  init: async function() {
+    App.contracts.HasbuContract.deployed().then(function(instance) {
+      hasbuInstance = instance;
+      return hasbuInstance;
+    }).then(function(result) {
+      console.log(result);
+    });
+  }
+};
+
+$(document).ready(function () {
+  console.log(App.initWeb3());
+
+  const palabras = ["solidity", "programacion", "fideos", "fiuba", "diseño", "lenguaje"];
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
 
   function inicializar() {
     fallos = 0;
     aciertos = 0;
-    palabra_secreta = '';
+    palabra_secreta = palabras[Math.floor(Math.random() * (palabras.length - 1))];
+    console.log(palabra_secreta);
     letras_probadas = '';
     letras_fallidas = '';
-
-    $('#imagen_ahorcado').attr('src', 'img/ahorcado.png');
+    $('#imagen_ahorcado').attr('src', '/img/ahorcado.png');
     $('#palabra').html('');
     $('#letras_fallidas').html('');
 
-    $('#palabra_secreta').val('');
     $('#probar_letra').val('');
     $('#adivinar').val('');
 
-    $('#palabra_secreta').attr("disabled", false);
-    $('#palabra_secreta').attr("type", "text");
     $('#boton_iniciar').attr("disabled", false);
 
     $('#probar_letra').attr("disabled", true);
@@ -27,7 +67,8 @@ $(document).ready(function () {
     $('#adivinar').attr("disabled", true);
     $('#boton_adivinar').attr("disabled", true);
 
-    $('#palabra_secreta').focus();
+    $('#boton_iniciar').focus();
+
   }
 
   function cadenaPermitida(cadena) {
@@ -139,7 +180,7 @@ $(document).ready(function () {
     letras_fallidas += letra;
     letras_probadas += letra;
 
-    $('#imagen_ahorcado').attr('src', 'img/' + fallos + 'error.png');
+    $('#imagen_ahorcado').attr('src', '/img/' + fallos + 'error.png');
 
     if (html == '') {
       html = letra;
@@ -161,7 +202,7 @@ $(document).ready(function () {
     $('#adivinar').attr('disabled', true);
     $('#boton_adivinar').attr('disabled', true);
 
-    $('#imagen_ahorcado').attr('src', 'img/ganador.png');
+    $('#imagen_ahorcado').attr('src', '/img/ganador.png');
 
     mostrarPalabra('gane');
   }
@@ -173,19 +214,16 @@ $(document).ready(function () {
     $('#adivinar').attr('disabled', true);
     $('#boton_adivinar').attr('disabled', true);
 
-    $('#imagen_ahorcado').attr('src', 'img/6error.png');
+    $('#imagen_ahorcado').attr('src', '/img/6error.png');
     mostrarPalabra('perdida');
   }
 
   function iniciar() {
-    let input_palabra_secreta = $('#palabra_secreta');
 
-    if (input_palabra_secreta.val().length > 0) {
-      if (cadenaPermitida(input_palabra_secreta.val())) {
-        palabra_secreta = input_palabra_secreta.val().toLowerCase();
+    if (palabra_secreta.length > 0) {
+      if (cadenaPermitida(palabra_secreta)) {
+        palabra_secreta = palabra_secreta.toLowerCase();
 
-        input_palabra_secreta.attr("disabled", true);
-        input_palabra_secreta.attr("type", "password");
         $('#boton_iniciar').attr("disabled", true);
 
         $('#probar_letra').attr("disabled", false);
@@ -203,8 +241,7 @@ $(document).ready(function () {
         $('#mensaje').modal('show')
 
         $('#mensaje').on('hidden.bs.modal', function () {
-          input_palabra_secreta.val('');
-          input_palabra_secreta.focus();
+          $('#boton_iniciar').focus();
         })
       }
     } else {
@@ -213,7 +250,7 @@ $(document).ready(function () {
       $('#mensaje').modal('show')
 
       $('#mensaje').on('hidden.bs.modal', function () {
-        input_palabra_secreta.focus();
+        $('#boton_iniciar').focus();
       })
     }
   }
@@ -259,7 +296,7 @@ $(document).ready(function () {
         $('#mensaje').modal('show')
 
         $('#mensaje').on('hidden.bs.modal', function () {
-          input_palabra_secreta.focus();
+          $('#boton_iniciar').focus();
         })
       }
     } else {
@@ -310,7 +347,7 @@ $(document).ready(function () {
     $('#boton_finalizar').click(finalizar);
     $('#boton_adivinar').click(adivinar);
 
-    $('#palabra_secreta').on("keydown", function (event) {
+    $('#boton_iniciar').on("keydown", function (event) {
       if (event.which == 13) {
         iniciar();
       }

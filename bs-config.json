@@ -1,9 +1,4 @@
 {
     "port": 8000,
-    "files": [
-        "/index.html",
-        "/index.js",
-        "/css/styles.css"
-    ],
-    "server": { "baseDir": "./app/src" }
+    "server": { "baseDir": ["./src", "./contracts"] }
 }

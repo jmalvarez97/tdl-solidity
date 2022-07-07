@@ -2,19 +2,57 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="507479c7-3457-44a5-b5a6-b61545eeb365" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/contracts/HasbuCoin.sol" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/contracts/Juego.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/contracts/Jugador.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/contracts/Migrations.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/contracts/Ownable.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/contracts/Word.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/Juego.sol" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/Juego.sol" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/truffle-config.js" beforeDir="false" afterPath="$PROJECT_DIR$/truffle-config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/bootstrap.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/css/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/1error.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/1error.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/2error.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/2error.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/3error.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/3error.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/4error.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/4error.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/5error.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/5error.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/6error.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/6error.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/ahorcado.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/ahorcado.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/img/ganador.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/img/ganador.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/truffle-contract.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/truffle-contract.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/web3.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/web3.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bs-config.json" beforeDir="false" afterPath="$PROJECT_DIR$/bs-config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Address.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Context.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/ERC20.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/ERC20.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/ERC20Detailed.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/HasbuCoin.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/IERC20.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Juego.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Juego.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Jugador.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Jugador.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Migrations.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Migrations.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Ownable.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Ownable.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/SafeERC20.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/SafeMath.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Word.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/Word.sol" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/2_deploy_contracts.js" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/2_deploy_contracts.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Solidity Contract" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,22 +66,37 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/src" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/app/src/img" />
       <recent name="$PROJECT_DIR$/app/src/css" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="dev" type="js.build_tools.npm" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="dev" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -58,6 +111,8 @@
       <workItem from="1656298061327" duration="150000" />
       <workItem from="1656719911252" duration="197000" />
       <workItem from="1656720112707" duration="4178000" />
+      <workItem from="1657156817927" duration="4043000" />
+      <workItem from="1657161777375" duration="4629000" />
     </task>
     <servers />
   </component>
