@@ -1,6 +1,7 @@
 App = {
   web3Provider: null,
   contracts: {},
+  accounts: {},
   initWeb3: async function() {
     if (window.ethereum) {
       App.web3Provider = window.ethereum;
@@ -18,29 +19,59 @@ App = {
           .HttpProvider('http://localhost:8545');
     }
     web3 = new Web3(App.web3Provider);
+    accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+
     return App.initContract();
   },
 
   initContract: function() {
-    $.getJSON("HasbuCoin.json", function(data) {
-      App.contracts.HasbuContract = TruffleContract(data);
-      App.contracts.HasbuContract.setProvider(App.web3Provider);
+    $.getJSON("Juego.json", function(data) {
+      App.contracts.Juego = TruffleContract(data);
+      App.contracts.Juego.setProvider(App.web3Provider);
       return App.init();
     });
   },
 
   init: async function() {
-    App.contracts.HasbuContract.deployed().then(function(instance) {
+    App.contracts.Juego.deployed().then(function(instance) {
       hasbuInstance = instance;
       return hasbuInstance;
-    }).then(function(result) {
-      console.log(result);
+    }).then(function(result) { 
+      const pong = result.ping().then(function(response){
+        console.log(response)
+        return response;
+      });
+   
+      const palabra = result.crearJugador({from: accounts[0]}).then(function(id){
+        console.log(id);
+        return id
+      })
+     
     });
+  },
+
+  /*
+  Funcion para deployar un jugador desde js problemas con metamask
+  */
+  crearJugador: async function(){
+    $.getJSON("Ownable.json", function(data) {
+      const web3 = new Web3(App.web3Provider);
+      const acc = web3.eth.accounts;
+      var contractProxy = web3.eth.contract(data.abi);
+      console.log(acc)
+      let code = data.bytecode;
+      let contract = contractProxy.new({from: acc[0], gas: 10000000, data:code})
+ 
+      console.log(contract.address)      
+    });
+
   }
 };
 
 $(document).ready(function () {
-  console.log(App.initWeb3());
+  let juego = App.initWeb3();
+  //let jugador = App.crearJugador()
+
 
   const palabras = ["solidity", "programacion", "fideos", "fiuba", "diseño", "lenguaje"];
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
@@ -256,6 +287,7 @@ $(document).ready(function () {
   }
 
   function probarLetra() {
+
     let input_probar_letra = $('#probar_letra');
 
     if (input_probar_letra.val() != ' ') {
