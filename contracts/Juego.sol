@@ -16,7 +16,7 @@ contract Juego{
     uint initBalance  = 5; 
 
     Word[] private words;
-    uint256 private idCount = 1; // ID 0 sera el id del juego, para las palabras creadas por el mismo juego
+    uint256 private idCount = 0; // ID 0 sera el id del juego, para las palabras creadas por el mismo juego
     
      modifier onlyJugador(uint id){
         require(idByAddress[msg.sender] == id);
@@ -73,6 +73,10 @@ contract Juego{
 
     function ping() public view returns(string memory){
         return "pong";
+    }
+
+    function getNum() public view returns (uint) {
+        return idCount;
     }
 
     fallback() external payable{}

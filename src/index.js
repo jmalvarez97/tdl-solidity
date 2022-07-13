@@ -1,4 +1,5 @@
 App = {
+  accJuego : "0xca9d6405C3b139C5b716dA0a3dbf1c900d336034",
   web3Provider: null,
   contracts: {},
   accounts: {},
@@ -20,7 +21,7 @@ App = {
     }
     web3 = new Web3(App.web3Provider);
     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-
+    //console.log(accounts)
     return App.initContract();
   },
 
@@ -35,42 +36,55 @@ App = {
   init: async function() {
     App.contracts.Juego.deployed().then(function(instance) {
       hasbuInstance = instance;
+      console.log(instance.address)
       return hasbuInstance;
     }).then(function(result) { 
-      const pong = result.ping().then(function(response){
-        console.log(response)
-        return response;
-      });
-   
-      const palabra = result.crearJugador({from: accounts[0]}).then(function(id){
-        console.log(id);
-        return id
-      })
-     
+      const pong = result.ping().then((res) => {console.log(res)});
+      //const palabra2 = result.crearJugador({from: accounts[0]}).then((id) => console.log(id));
     });
   },
 
-  /*
-  Funcion para deployar un jugador desde js problemas con metamask
-  */
+  
+  //Funcion para deployar un jugador desde js 
+
   crearJugador: async function(){
-    $.getJSON("Ownable.json", function(data) {
-      const web3 = new Web3(App.web3Provider);
-      const acc = web3.eth.accounts;
-      var contractProxy = web3.eth.contract(data.abi);
-      console.log(acc)
-      let code = data.bytecode;
-      let contract = contractProxy.new({from: acc[0], gas: 10000000, data:code})
- 
-      console.log(contract.address)      
+    $.getJSON("Jugador.json", function(data) {
+      const web3 = new Web3(App.web3Provider);  // metamask
+      const acc = web3.eth.accounts; // array de accounts de metamask
+      var contractProxy = web3.eth.contract(data.abi); // base de un contrato
+      let code = data.bytecode; // bytecode de un contrato
+      
+      let myContract;
+      // deplyoment (formato viejo)
+      contractProxy.new(App.accJuego,{from:acc[0], gas: 2000000, data:code}, function(err, contract){
+        console.log(contract.address); // no me esta dando el contrato 
+        if(err) {
+          console.error(err);
+          return;
+        } 
+        else if(contract.address){
+          myContract = contract;
+          console.log('address: ' + myContract.address);
+      }})
+      
     });
 
   }
+/*
+  elegirPalabra: async function(){
+    App.contracts.Juego.deployed().then(function(instance) {
+      hasbuInstance = instance;
+      return hasbuInstance;
+    }).then(function(result) { 
+      return result.elegirPalabra
+  }
+*/
+    
 };
 
 $(document).ready(function () {
   let juego = App.initWeb3();
-  //let jugador = App.crearJugador()
+  let jugador = App.crearJugador()
 
 
   const palabras = ["solidity", "programacion", "fideos", "fiuba", "diseño", "lenguaje"];
