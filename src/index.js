@@ -1,9 +1,10 @@
 
 App = {
-  accJuego : '0xf519F003bED01a9b519cd51951eF4748540bC4AF',
+  accJuego : '0x15bD476AC50835b70757eB1725aa0BfBddfeA1b4',
   web3Provider: null,
   contracts: {},
   accounts: {},
+  word : "",
   initWeb3: async function() {
     if (window.ethereum) {
       App.web3Provider = window.ethereum;
@@ -65,7 +66,7 @@ App = {
       
     },
   
-  elegirPalabra: async function(){
+  elegirPalabra: function(){
     $.getJSON("Juego.json", function(data) {
 
       const acc = new Web3(App.web3Provider).eth.accounts;  // metamask
@@ -73,28 +74,37 @@ App = {
       const juego = TruffleContract(data);
       juego.setProvider(App.web3Provider);
       var instance = juego.at(App.accJuego);
+      instance.elegirPalabra.call({from: acc[0]}).then((res, err) =>{
+        if(!err){
+          return App.mostrarPalabra(res);
+        }
+        else{
+          console.log("AAAA")
+        }
+      })
 
-      instance.elegirPalabra({from: acc[0]}).then((res) => console.log(res));
+
     });
-/*
-    $.getJSON("Word.json", function(data){
+  },
+    mostrarPalabra: function(add){
+      $.getJSON("Word.json", function(data){
       const web3 = new Web3(App.web3Provider);  // metamask
       const acc = web3.eth.accounts; // array de accounts de metamask
-      const addWord = "0xf519F003bED01a9b519cd51951eF4748540bC4AF";
       
       const word = TruffleContract(data);
       word.setProvider(App.web3Provider);
-      var instance = word.at(addWord);
+      var instance = word.at(add);
+      instance.getStr({from: acc[0]}).then((res) => {
+        console.log(res);
+        return res;
 
-      //instance.getStr({from: acc[0]}).then((res) => console.log(res));
+      });
 
 
     })
-  */  
-  
-
   }
-    
+   
+  
 
 
 
@@ -105,6 +115,8 @@ $(document).ready(function () {
   let juego = App.initWeb3();
   //let jugador = App.crearJugador()
   let palabra = App.elegirPalabra();
+
+  console.log(palabra);
 
   const palabras = ["solidity", "programacion", "fideos", "fiuba", "diseño", "lenguaje"];
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
