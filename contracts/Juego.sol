@@ -1,6 +1,6 @@
-import "./Word.sol";
-import "./Jugador.sol";
 import "./ERC20.sol";
+import "./Word.sol";
+import "./Ownable.sol";
 
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.6.0  <0.9.0;
@@ -8,75 +8,76 @@ pragma solidity >=0.6.0  <0.9.0;
 // solo lo puede llamar jugador
 
 
-contract Juego{
+contract Juego is Ownable{
     mapping(address => uint) idByAddress;
-    mapping(Word => address) wordOwner;
+    mapping(address => address) wordOwner;
     HasbuCoins balances;
     uint256 randNonce = 0;
     uint initBalance  = 5; 
 
-    Word[] private words;
-    uint256 private idCount = 0; // ID 0 sera el id del juego, para las palabras creadas por el mismo juego
+    address[] private words;
+    uint256 private idCount = 2; // ID 1 sera el id del juego, para las palabras creadas por el mismo juego
     
-     modifier onlyJugador(uint id){
-        require(idByAddress[msg.sender] == id);
+     modifier onlyJugador(){
+        require(idByAddress[msg.sender] != 0, "aca maestro");
         _;
     }
 
     constructor(){
-        string[10] memory inits = ["mandato", "quizas", "ayer", "mientras", "soleado", "maravilla", "astuto", "raton", "mudanza", "llegando" ];
-        idByAddress[address(this)] = 0;
-        for(uint i=0; i<inits.length; i++){
-            _crearPalabra(inits[i], 0);
-        }
-        
+        idByAddress[msg.sender] = 1;
         balances = new HasbuCoins();
     }
 
 
  
-   function crearJugador() public returns (uint){
+   function crearJugador() public{
        idCount++;
        idByAddress[msg.sender] = idCount;
        balances.addMinter(msg.sender);
        balances.transferFrom(address(this), msg.sender, 50);
-       return idCount;
    }
 
-    function _crearPalabra(string memory str, uint id) public onlyJugador(id) returns(uint){
+   function getID() public view onlyJugador returns(uint){
+        return idByAddress[msg.sender];
+   }
+   function _crearPalabra(address add) public onlyOwner{
+    wordOwner[add] = msg.sender;
+    words.push(add);
+   }
+
+    function crearPalabra(string memory str) public onlyJugador{
         // Modificador: solo id jugador puede llamar a esto
         Word word = new Word(str);
-        wordOwner[word] = msg.sender;
-        words.push(word);
-        return words.length;
+        wordOwner[address(word)] = msg.sender;
+        words.push(address(word));
     }
 
 
-    function _elegirPalabra(address sender) private returns(Word){
+    function _elegirPalabra(address sender) private returns(address){
         require(words.length > 0); // Nos fijamos que haya alguna palabra antes
         require(balances.balanceOf(sender) >= 5); // nos fijamos que tenga al menos 5 monedas para ejecutar la transaccion
         balances.transferFrom(sender, address(this), 5);
         uint indice = uint(keccak256(abi.encodePacked(randNonce, block.timestamp, sender))) %  words.length ;
         randNonce++;
-        Word word = words[indice];
-        require(wordOwner[word] != sender); // me fijo que la palabra asignada no sea creada por el jugador
-        return word;
+        address addWord = words[indice];
+        require(wordOwner[addWord] != sender); // me fijo que la palabra asignada no sea creada por el jugador
+        return addWord;
     }
 
-    function elegirPalabra(uint id) public onlyJugador(id) returns(Word){
+    function elegirPalabra() public onlyJugador returns(address){
         return _elegirPalabra(msg.sender);
     }
  
-    function hasbuBalance(uint id) public view onlyJugador(id) returns(uint){
+    function hasbuBalance(uint id) public view onlyJugador returns(uint){
         return balances.balanceOf(msg.sender);
     }
 
-    function ping() public view returns(string memory){
+    function ping() public view returns (string memory){
         return "pong";
     }
 
-    function getNum() public view returns (uint) {
-        return idCount;
+    function getfirst() public view returns(string memory ){
+        return Word(words[0]).getStr();
     }
 
     fallback() external payable{}

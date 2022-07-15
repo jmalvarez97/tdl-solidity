@@ -1,5 +1,6 @@
+
 App = {
-  accJuego : "0xca9d6405C3b139C5b716dA0a3dbf1c900d336034",
+  accJuego : '0xf519F003bED01a9b519cd51951eF4748540bC4AF',
   web3Provider: null,
   contracts: {},
   accounts: {},
@@ -36,7 +37,7 @@ App = {
   init: async function() {
     App.contracts.Juego.deployed().then(function(instance) {
       hasbuInstance = instance;
-      console.log(instance.address)
+      //console.log(instance)
       return hasbuInstance;
     }).then(function(result) { 
       const pong = result.ping().then((res) => {console.log(res)});
@@ -47,45 +48,63 @@ App = {
   
   //Funcion para deployar un jugador desde js 
 
-  crearJugador: async function(){
-    $.getJSON("Jugador.json", function(data) {
+  crearJugador: function(){
+    $.getJSON("Juego.json", function(data){
+      
+      const web3 = new Web3(App.web3Provider);
+      const acc = web3.eth.accounts;
+
+      const juego = TruffleContract(data);
+      juego.setProvider(App.web3Provider);
+
+      const instance = juego.at(App.accJuego);
+
+      console.log(instance);
+      instance.crearJugador({from: acc[0]})
+    })
+      
+    },
+  
+  elegirPalabra: async function(){
+    $.getJSON("Juego.json", function(data) {
+
+      const acc = new Web3(App.web3Provider).eth.accounts;  // metamask
+
+      const juego = TruffleContract(data);
+      juego.setProvider(App.web3Provider);
+      var instance = juego.at(App.accJuego);
+
+      instance.elegirPalabra({from: acc[0]}).then((res) => console.log(res));
+    });
+/*
+    $.getJSON("Word.json", function(data){
       const web3 = new Web3(App.web3Provider);  // metamask
       const acc = web3.eth.accounts; // array de accounts de metamask
-      var contractProxy = web3.eth.contract(data.abi); // base de un contrato
-      let code = data.bytecode; // bytecode de un contrato
+      const addWord = "0xf519F003bED01a9b519cd51951eF4748540bC4AF";
       
-      let myContract;
-      // deplyoment (formato viejo)
-      contractProxy.new(App.accJuego,{from:acc[0], gas: 2000000, data:code}, function(err, contract){
-        console.log(contract.address); // no me esta dando el contrato 
-        if(err) {
-          console.error(err);
-          return;
-        } 
-        else if(contract.address){
-          myContract = contract;
-          console.log('address: ' + myContract.address);
-      }})
-      
-    });
+      const word = TruffleContract(data);
+      word.setProvider(App.web3Provider);
+      var instance = word.at(addWord);
+
+      //instance.getStr({from: acc[0]}).then((res) => console.log(res));
+
+
+    })
+  */  
+  
 
   }
-/*
-  elegirPalabra: async function(){
-    App.contracts.Juego.deployed().then(function(instance) {
-      hasbuInstance = instance;
-      return hasbuInstance;
-    }).then(function(result) { 
-      return result.elegirPalabra
-  }
-*/
+    
+
+
+
     
 };
 
 $(document).ready(function () {
   let juego = App.initWeb3();
-  let jugador = App.crearJugador()
-
+  //let jugador = App.crearJugador()
+  let palabra = App.elegirPalabra();
 
   const palabras = ["solidity", "programacion", "fideos", "fiuba", "diseño", "lenguaje"];
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
