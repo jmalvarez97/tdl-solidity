@@ -1,6 +1,6 @@
 $(document).ready(function () {
   App = {
-    accJuego : '0x48F4d3a14BdEb5174157bADC12A25DC9602fd251',
+    accJuego : '0x73aE701FDb1B2C6820b9D0Be597621417930EA24',
     web3Provider: null,
     contracts: {},
     accounts: {},
@@ -45,124 +45,6 @@ $(document).ready(function () {
         const pong = result.ping().then((res) => {console.log(res)});
         //const palabra2 = result.crearJugador({from: accounts[0]}).then((id) => console.log(id));
       });
-    },
-
-    crearJugador: function(){
-      $.getJSON("Juego.json", function(data){
-        
-        const web3 = new Web3(App.web3Provider);
-        const acc = web3.eth.accounts;
-
-        const juego = TruffleContract(data);
-        juego.setProvider(App.web3Provider);
-
-        const instance = juego.at(App.accJuego);
-
-        console.log(instance);
-        instance.crearJugador({from: acc[0]})
-      })
-        
-      },
-    
-    elegirPalabra: function(){
-      $.getJSON("Juego.json", function(data) {
-
-        const acc = new Web3(App.web3Provider).eth.accounts;  // metamask
-
-        const juego = TruffleContract(data);
-        juego.setProvider(App.web3Provider);
-        var instance = juego.at(App.accJuego);
-        instance.elegirPalabra.call({from: acc[0]}).then((res, err) =>{
-          if(!err){
-            return App.mostrarBlockPalabra(res);
-          }
-          else{
-            console.log("AAAA")
-          }
-        })
-
-
-      });
-    },
-
-    mostrarBlockPalabra: function(add){
-        $.getJSON("Word.json", function(data){
-        const web3 = new Web3(App.web3Provider);  // metamask
-        const acc = web3.eth.accounts; // array de accounts de metamask
-        
-        const word = TruffleContract(data);
-        word.setProvider(App.web3Provider);
-        var instance = word.at(add);
-        instance.getStr({from: acc[0]}).then((res) => {
-          console.log(res);
-          return App._iniciar(res);
-        });
-
-
-      })
-    },
-
-    _inicializar : function() {
-      fallos = 0;
-      aciertos = 0;
-      palabra_secreta = "maravilla";
-      //console.log(palabra_secreta);
-      letras_probadas = '';
-      letras_fallidas = '';
-      $('#imagen_ahorcado').attr('src', '/img/ahorcado.png');
-      $('#palabra').html('');
-      $('#letras_fallidas').html('');
-  
-      $('#probar_letra').val('');
-      $('#adivinar').val('');
-  
-      $('#boton_iniciar').attr("disabled", false);
-  
-      $('#probar_letra').attr("disabled", true);
-      $('#boton_probar').attr("disabled", true);
-  
-      $('#adivinar').attr("disabled", true);
-      $('#boton_adivinar').attr("disabled", true);
-  
-      $('#boton_iniciar').focus();
-  
-    },
-    
-    _iniciar : function(word) {
-
-      if (word.length > 0) {
-        if (App._cadenaPermitida(word)) {
-          word = word.toLowerCase();
-  
-          $('#boton_iniciar').attr("disabled", true);
-  
-          $('#probar_letra').attr("disabled", false);
-          $('#boton_probar').attr("disabled", false);
-  
-          $('#adivinar').attr("disabled", false);
-          $('#boton_adivinar').attr("disabled", false);
-  
-          App._establecerEspacios();
-  
-          $('#probar_letra').focus();
-        } else {
-          $('#etiqueta_mensaje').html('Datos Incorrectos');
-          $('#cuerpo_mensaje').html('La palabra debe contener caracteres de la A a la Z únicamente.');
-          $('#mensaje').modal('show')
-  
-          $('#mensaje').on('hidden.bs.modal', function () {
-            $('#boton_iniciar').focus();
-          })
-        }
-      } else {
-        $('#etiqueta_mensaje').html('Datos Incorrectos');
-        $('#cuerpo_mensaje').html('Debe escribir la palabra secreta.');
-        $('#mensaje').modal('show')
-  
-        $('#mensaje').on('hidden.bs.modal', function () {
-          $('#boton_iniciar').focus();
-        })
-      }
     },
 
     _cadenaPermitida:  function(cadena) {
@@ -397,7 +279,129 @@ $(document).ready(function () {
 
     _finalizar: function() {
       App._inicializar();
+    },
+
+    
+    crearJugador: function(){
+      $.getJSON("Juego.json", function(data){
+        
+        const web3 = new Web3(App.web3Provider);
+        const acc = web3.eth.accounts;
+
+        const juego = TruffleContract(data);
+        juego.setProvider(App.web3Provider);
+
+        const instance = juego.at(App.accJuego);
+
+        console.log(instance);
+        instance.crearJugador({from: acc[0]})
+      })
+        
+      },
+    
+    elegirPalabra: function(){
+      $.getJSON("Juego.json", function(data) {
+
+        const acc = new Web3(App.web3Provider).eth.accounts;  // metamask
+
+        const juego = TruffleContract(data);
+        juego.setProvider(App.web3Provider);
+        var instance = juego.at(App.accJuego);
+        instance.elegirPalabra.call({from: acc[0]}).then((res, err) =>{
+          if(!err){
+            return App.mostrarBlockPalabra(res);
+          }
+          else{
+            console.log("AAAA")
+          }
+        })
+
+
+      });
+    },
+
+    mostrarBlockPalabra: function(add){
+        $.getJSON("Word.json", function(data){
+        const web3 = new Web3(App.web3Provider);  // metamask
+        const acc = web3.eth.accounts; // array de accounts de metamask
+        
+        const word = TruffleContract(data);
+        word.setProvider(App.web3Provider);
+        var instance = word.at(add);
+        instance.getStr({from: acc[0]}).then((res) => {
+          console.log(res);
+          return App._inicializar(res);
+        });
+
+
+      })
+    },
+
+    _inicializar : function(word) {
+      fallos = 0;
+      aciertos = 0;
+      palabra_secreta = word;
+      //console.log(palabra_secreta);
+      letras_probadas = '';
+      letras_fallidas = '';
+      $('#imagen_ahorcado').attr('src', '/img/ahorcado.png');
+      $('#palabra').html('');
+      $('#letras_fallidas').html('');
+  
+      $('#probar_letra').val('');
+      $('#adivinar').val('');
+  
+      $('#boton_iniciar').attr("disabled", false);
+  
+      $('#probar_letra').attr("disabled", true);
+      $('#boton_probar').attr("disabled", true);
+  
+      $('#adivinar').attr("disabled", true);
+      $('#boton_adivinar').attr("disabled", true);
+  
+      $('#boton_iniciar').focus();
+
+      return App._iniciar(word)
+  
+    },
+    
+    _iniciar : function(word) {
+
+      if (word.length > 0) {
+        if (App._cadenaPermitida(word)) {
+          word = word.toLowerCase();
+  
+          $('#boton_iniciar').attr("disabled", true);
+  
+          $('#probar_letra').attr("disabled", false);
+          $('#boton_probar').attr("disabled", false);
+  
+          $('#adivinar').attr("disabled", false);
+          $('#boton_adivinar').attr("disabled", false);
+  
+          App._establecerEspacios();
+  
+          $('#probar_letra').focus();
+        } else {
+          $('#etiqueta_mensaje').html('Datos Incorrectos');
+          $('#cuerpo_mensaje').html('La palabra debe contener caracteres de la A a la Z únicamente.');
+          $('#mensaje').modal('show')
+  
+          $('#mensaje').on('hidden.bs.modal', function () {
+            $('#boton_iniciar').focus();
+          })
+        }
+      } else {
+        $('#etiqueta_mensaje').html('Datos Incorrectos');
+        $('#cuerpo_mensaje').html('Debe escribir la palabra secreta.');
+        $('#mensaje').modal('show')
+  
+        $('#mensaje').on('hidden.bs.modal', function () {
+          $('#boton_iniciar').focus();
+        })
+      }
     }
+
       
   };
 
@@ -405,12 +409,11 @@ $(document).ready(function () {
   let juego = App.initWeb3();
   //let jugador = App.crearJugador()
   //let palabra = App.elegirPalabra();
-
-  const palabras = ["solidity", "programacion", "fideos", "fiuba", "diseño", "lenguaje"];
+  
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
 
   function main() {
-    App._inicializar();
+    
     $('#boton_iniciar').click(App.elegirPalabra);
     $('#boton_probar').click(App._probarLetra);
     $('#boton_finalizar').click(App._finalizar);
@@ -418,8 +421,7 @@ $(document).ready(function () {
 
     $('#boton_iniciar').on("keydown", function (event) {
       if (event.which == 13) {
-        console.log("aca existo")
-        App.elegirPalabra();
+        App.elegirPalabra()
       }
     });
 

@@ -838,7 +838,7 @@
   "sourceMap": "270:876:14:-:0;;;543:58;;;;;;;;;;583:10;575:5;;:18;;;;;;;;;;;;;;;;;;270:876;;;;;;",
   "deployedSourceMap": "270:876:14:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;296:20;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;949:192;;;;;;;;;;;;;:::i;:::-;;:::i;:::-;;296:20;;;;;;;;;;;;:::o;949:192::-;748:5;;;;;;;;;;734:19;;:10;:19;;;726:28;;;;;;1050:1:::1;1030:22;;:8;:22;;::::0;1022:31:::1;;;::::0;::::1;;1097:8;1069:37;;1090:5;::::0;::::1;;;;;;;;1069:37;;;;;;;;;;;;1125:8;1117:5;::::0;:16:::1;;;;;;;;;;;;;;;;;;949:192:::0;:::o;7:126:19:-;44:7;84:42;77:5;73:54;62:65;;7:126;;;:::o;139:96::-;176:7;205:24;223:5;205:24;:::i;:::-;194:35;;139:96;;;:::o;241:118::-;328:24;346:5;328:24;:::i;:::-;323:3;316:37;241:118;;:::o;365:222::-;458:4;496:2;485:9;481:18;473:26;;509:71;577:1;566:9;562:17;553:6;509:71;:::i;:::-;365:222;;;;:::o;674:117::-;783:1;780;773:12;920:122;993:24;1011:5;993:24;:::i;:::-;986:5;983:35;973:63;;1032:1;1029;1022:12;973:63;920:122;:::o;1048:139::-;1094:5;1132:6;1119:20;1110:29;;1148:33;1175:5;1148:33;:::i;:::-;1048:139;;;;:::o;1193:329::-;1252:6;1301:2;1289:9;1280:7;1276:23;1272:32;1269:119;;;1307:79;;:::i;:::-;1269:119;1427:1;1452:53;1497:7;1488:6;1477:9;1473:22;1452:53;:::i;:::-;1442:63;;1398:117;1193:329;;;;:::o",
   "source": "// SPDX-License-Identifier: GPL-3.0\r\npragma solidity >=0.5.0  <0.9.0;\r\n\r\n/**\r\n * @title Ownable\r\n * @dev The Ownable contract has an owner address, and provides basic authorization control\r\n * functions, this simplifies the implementation of \"user permissions\".\r\n */\r\n\r\ncontract Ownable {\r\n\r\n    address public owner;\r\n\r\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\r\n\r\n\r\n    /**\r\n     * @dev The Ownable constructor sets the original `owner` of the contract to the sender\r\n   * account.\r\n   */\r\n    constructor() public {\r\n        owner = msg.sender;\r\n    }\r\n\r\n\r\n    /**\r\n     * @dev Throws if called by any account other than the owner.\r\n   */\r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner);\r\n        _;\r\n    }\r\n\r\n\r\n    /**\r\n     * @dev Allows the current owner to transfer control of the contract to a newOwner.\r\n   * @param newOwner The address to transfer ownership to.\r\n   */\r\n    function transferOwnership(address newOwner) public onlyOwner {\r\n        require(newOwner != address(0));\r\n        emit OwnershipTransferred(owner, newOwner);\r\n        owner = newOwner;\r\n    }\r\n\r\n}",
-  "sourcePath": "C:\\Users\\Manu\\Desktop\\tp TDL\\clonado 15\\tdl-solidity\\contracts\\Ownable.sol",
+  "sourcePath": "C:\\Users\\Manu\\Desktop\\tp TDL\\clonado 0038\\tdl-solidity\\contracts\\Ownable.sol",
   "ast": {
     "absolutePath": "project:/contracts/Ownable.sol",
     "exportedSymbols": {
@@ -1560,7 +1560,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-07-15T16:36:36.960Z",
+  "updatedAt": "2022-07-16T03:39:43.820Z",
   "devdoc": {
     "details": "The Ownable contract has an owner address, and provides basic authorization control functions, this simplifies the implementation of \"user permissions\".",
     "kind": "dev",
