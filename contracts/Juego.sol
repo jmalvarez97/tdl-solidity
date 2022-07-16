@@ -15,6 +15,8 @@ contract Juego is Ownable{
     uint256 randNonce = 0;
     uint initBalance  = 5; 
 
+    event AddressWord(address add);
+
     address[] private words;
     uint256 private idCount = 2; // ID 1 sera el id del juego, para las palabras creadas por el mismo juego
     
@@ -61,6 +63,7 @@ contract Juego is Ownable{
         randNonce++;
         address addWord = words[indice];
         require(wordOwner[addWord] != sender); // me fijo que la palabra asignada no sea creada por el jugador
+        emit AddressWord(addWord);
         return addWord;
     }
 

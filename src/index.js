@@ -1,10 +1,10 @@
 $(document).ready(function () {
   App = {
-    accJuego : '0x73aE701FDb1B2C6820b9D0Be597621417930EA24',
+    accJuego : '0x1849b4f6D3455f99b65F933e130591545D726826',
     web3Provider: null,
     contracts: {},
     accounts: {},
-    word : "",
+    word : null,
 
     initWeb3: async function() {
       if (window.ethereum) {
@@ -195,19 +195,40 @@ $(document).ready(function () {
       App._mostrarPalabra('perdida');
     },
 
-    _probarLetra: function() {
+    _probarLetra: function(addWord) {
 
       let input_probar_letra = $('#probar_letra');
-  
+
+
       if (input_probar_letra.val() != ' ') {
         if (input_probar_letra.val().length > 0) {
           if (App._cadenaPermitida(input_probar_letra.val())) {
             if (!App._verificarLetraProbada(input_probar_letra.val())) {
+
+              $.getJSON("Word.json", function(data){
+                const web3 = new Web3(App.web3Provider);  // metamask
+                const acc = web3.eth.accounts; // array de accounts de metamask
+                
+                const word = TruffleContract(data);
+                word.setProvider(App.web3Provider);
+                console.log(addWord)
+                var instance = word.at(addWord);
+                
+                instance.getStr({from: acc[0]}).then((res) => {
+                  console.log(res);
+                });
+              })
+              
+              
+              
+              
+              /*
               if (App._verificarLetra(input_probar_letra.val())) {
                 App._incluirLetra(input_probar_letra.val());
               } else {
                 App._incluirFallo(input_probar_letra.val())
               }
+              */
   
               input_probar_letra.val('');
               input_probar_letra.focus();
@@ -307,9 +328,9 @@ $(document).ready(function () {
         const juego = TruffleContract(data);
         juego.setProvider(App.web3Provider);
         var instance = juego.at(App.accJuego);
-        instance.elegirPalabra.call({from: acc[0]}).then((res, err) =>{
+        instance.elegirPalabra({from: acc[0]}).then((res, err) =>{
           if(!err){
-            return App.mostrarBlockPalabra(res);
+            return App.mostrarBlockPalabra(res.logs[0].args.add);
           }
           else{
             console.log("AAAA")
@@ -330,14 +351,14 @@ $(document).ready(function () {
         var instance = word.at(add);
         instance.getStr({from: acc[0]}).then((res) => {
           console.log(res);
-          return App._inicializar(res);
+          return App._inicializar(res,add);
         });
 
 
       })
     },
 
-    _inicializar : function(word) {
+    _inicializar : function(word, wordAdd) {
       fallos = 0;
       aciertos = 0;
       palabra_secreta = word;
@@ -361,11 +382,11 @@ $(document).ready(function () {
   
       $('#boton_iniciar').focus();
 
-      return App._iniciar(word)
+      return App._iniciar(word, wordAdd)
   
     },
     
-    _iniciar : function(word) {
+    _iniciar : function(word, wordAdd) {
 
       if (word.length > 0) {
         if (App._cadenaPermitida(word)) {
@@ -400,16 +421,18 @@ $(document).ready(function () {
           $('#boton_iniciar').focus();
         })
       }
-    }
-
-      
+      addWord = wordAdd;
+      return wordAdd;
+    },
+    
   };
 
 
   let juego = App.initWeb3();
   //let jugador = App.crearJugador()
   //let palabra = App.elegirPalabra();
-  
+  let addWord = null;
+
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
 
   function main() {
@@ -421,13 +444,13 @@ $(document).ready(function () {
 
     $('#boton_iniciar').on("keydown", function (event) {
       if (event.which == 13) {
-        App.elegirPalabra()
+        addWord = App.elegirPalabra()
       }
     });
 
     $('#probar_letra').on("keydown", function (event) {
       if (event.which == 13) {
-        App._probarLetra();
+        App._probarLetra(addWord);
       }
     });
 
