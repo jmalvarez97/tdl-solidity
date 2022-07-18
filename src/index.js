@@ -467,6 +467,14 @@ $(document).ready(function () {
     $('#boton_probar').click(App._probarLetra);
     $('#boton_finalizar').click(App._finalizar);
     $('#boton_adivinar').click(App._adivinar);
+    $('#boton_crear').click(App.crearJugador);
+
+
+     $('#boton_crear').on("keydown", function (event) {
+              if (event.which == 13) {
+                App.crearJugador();
+              }
+            });
 
     $('#boton_iniciar').on("keydown", function (event) {
       if (event.which == 13) {
