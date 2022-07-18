@@ -1,6 +1,6 @@
 $(document).ready(function () {
   App = {
-    accJuego : '0x1849b4f6D3455f99b65F933e130591545D726826',
+    accJuego : '0xF5B9E63BdD55c09501a6c3eB8c50003C0C7F6383',
     web3Provider: null,
     contracts: {},
     accounts: {},
@@ -128,18 +128,22 @@ $(document).ready(function () {
       $('#palabra').html(html);
     },
   
-    _incluirLetra: function(letra) {
+    _incluirLetra: function(mascara) {
       let numero_span = 0;
+      console.log(mascara)
   
-      letra = letra.toLowerCase();
-  
-      for (let i = 0; i < palabra_secreta.length; i++) {
-        if (palabra_secreta.charAt(i) == letra) {
-          aciertos++;
-          App._escribirSpan(i, letra);
-          letras_probadas += letra;
-        }
+      mascaraW = mascara.toLowerCase();
+      for(let i=0; i< mascaraW.length; i++){
+      if(mascaraW[i] != "-"){
+        for (let i = 0; i < palabra_secreta.length; i++) {
+          if (palabra_secreta.charAt(i) == mascaraW[i]) {
+            aciertos++;
+            App._escribirSpan(i, mascaraW[i]);
+            letras_probadas += mascaraW[i];
+          }
       }
+      }
+    }
   
       if (aciertos == palabra_secreta.replace(new RegExp(' ', 'g'), '').length) {
         App._gane();
@@ -198,12 +202,15 @@ $(document).ready(function () {
     _probarLetra: function(addWord) {
 
       let input_probar_letra = $('#probar_letra');
+      let letra = $('#probar_letra').val();
+      console.log(letra)
+      //console.log(input_probar_letra)
 
-
-      if (input_probar_letra.val() != ' ') {
-        if (input_probar_letra.val().length > 0) {
-          if (App._cadenaPermitida(input_probar_letra.val())) {
-            if (!App._verificarLetraProbada(input_probar_letra.val())) {
+      const add = addWord.view.add
+      if (letra != ' ') {
+        if (letra.length > 0) {
+          if (App._cadenaPermitida(letra)) {
+            if (!App._verificarLetraProbada(letra)) {
 
               $.getJSON("Word.json", function(data){
                 const web3 = new Web3(App.web3Provider);  // metamask
@@ -211,25 +218,24 @@ $(document).ready(function () {
                 
                 const word = TruffleContract(data);
                 word.setProvider(App.web3Provider);
-                console.log(addWord)
-                var instance = word.at(addWord);
+                var instance = word.at(add);
                 
-                instance.getStr({from: acc[0]}).then((res) => {
-                  console.log(res);
+                instance.index(letra, {from: acc[0]}).then((res) => {
+                  const mask = res.logs[0].args.mask
+                  App._incluirLetra(mask);
+                  let aux = 0;
+                  for(let i=0; i<mask.length; i++){
+                    if(mask[i] != "-"){
+                      aux++;
+                    } 
+                  }
+                  if(aux == 0){
+                    App._incluirFallo(letra);
+                  }
                 });
               })
               
               
-              
-              
-              /*
-              if (App._verificarLetra(input_probar_letra.val())) {
-                App._incluirLetra(input_probar_letra.val());
-              } else {
-                App._incluirFallo(input_probar_letra.val())
-              }
-              */
-  
               input_probar_letra.val('');
               input_probar_letra.focus();
             } else {
@@ -267,16 +273,33 @@ $(document).ready(function () {
       }
     },
 
-    _adivinar: function() {
+    _adivinar: function(addWord) {
+      const add = addWord.view.add
       let input_adivinar = $('#adivinar');
+      let palabra_adivinar = $('#adivinar').val()
   
       if (input_adivinar.val().length > 0) {
         if (App._cadenaPermitida(input_adivinar.val())) {
-          if (input_adivinar.val().toLowerCase() == palabra_secreta) {
-            App._gane();
-          } else {
-            App._perdida();
-          }
+
+          $.getJSON("Word.json", function(data){
+            const web3 = new Web3(App.web3Provider);  // metamask
+            const acc = web3.eth.accounts; // array de accounts de metamask
+            
+            const word = TruffleContract(data);
+            word.setProvider(App.web3Provider);
+            var instance = word.at(add);
+
+            instance.chequearPalabra(palabra_adivinar, {from : acc[0]}).then((res, err) => {
+              if(res){
+                console.log(res);
+                App._gane();
+              }
+              else{
+                App._perdida();
+              }
+            })
+
+          })
         } else {
           $('#etiqueta_mensaje').html('Datos Incorrectos');
           $('#cuerpo_mensaje').html('Sólo se permiten caracteres de la A a la Z únicamente.');
@@ -314,51 +337,59 @@ $(document).ready(function () {
 
         const instance = juego.at(App.accJuego);
 
-        console.log(instance);
         instance.crearJugador({from: acc[0]})
       })
         
       },
     
     elegirPalabra: function(){
-      $.getJSON("Juego.json", function(data) {
 
-        const acc = new Web3(App.web3Provider).eth.accounts;  // metamask
+      return new Promise((resolve, reject) => {
+        $.getJSON("Juego.json").success(function(data) {
+
+        const acc = new Web3(App.web3Provider).eth.accounts;
 
         const juego = TruffleContract(data);
         juego.setProvider(App.web3Provider);
         var instance = juego.at(App.accJuego);
-        instance.elegirPalabra({from: acc[0]}).then((res, err) =>{
-          if(!err){
-            return App.mostrarBlockPalabra(res.logs[0].args.add);
-          }
-          else{
-            console.log("AAAA")
+        instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
+          if(!errAdd){
+            add = address.logs[0].args.add
+            App.mostrarBlockPalabra(add).then((resWord, errWord) => {
+              if(!errWord){
+                App._inicializar(resWord);
+                App._iniciar(resWord);
+                resolve(add);
+              }
+
+            });
           }
         })
 
 
       });
+    })
     },
 
     mostrarBlockPalabra: function(add){
-        $.getJSON("Word.json", function(data){
-        const web3 = new Web3(App.web3Provider);  // metamask
-        const acc = web3.eth.accounts; // array de accounts de metamask
-        
-        const word = TruffleContract(data);
-        word.setProvider(App.web3Provider);
-        var instance = word.at(add);
-        instance.getStr({from: acc[0]}).then((res) => {
-          console.log(res);
-          return App._inicializar(res,add);
-        });
+        return new Promise((resolve, reject) => {
+          $.getJSON("Word.json", function(data){
+          const web3 = new Web3(App.web3Provider);  
+          const acc = web3.eth.accounts; 
+          
+          const word = TruffleContract(data);
+          word.setProvider(App.web3Provider);
+          var instance = word.at(add);
+          instance.getStr.call({from: acc[0]}).then((res) => {
+            resolve(res);
+          });
 
 
       })
-    },
+    });
+  },
 
-    _inicializar : function(word, wordAdd) {
+    _inicializar : function(word) {
       fallos = 0;
       aciertos = 0;
       palabra_secreta = word;
@@ -381,12 +412,9 @@ $(document).ready(function () {
       $('#boton_adivinar').attr("disabled", true);
   
       $('#boton_iniciar').focus();
-
-      return App._iniciar(word, wordAdd)
-  
     },
     
-    _iniciar : function(word, wordAdd) {
+    _iniciar : function(word) {
 
       if (word.length > 0) {
         if (App._cadenaPermitida(word)) {
@@ -421,17 +449,15 @@ $(document).ready(function () {
           $('#boton_iniciar').focus();
         })
       }
-      addWord = wordAdd;
-      return wordAdd;
     },
     
   };
 
 
   let juego = App.initWeb3();
+  
   //let jugador = App.crearJugador()
-  //let palabra = App.elegirPalabra();
-  let addWord = null;
+  //console.log(App.elegirPalabra());
 
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
 
@@ -444,21 +470,26 @@ $(document).ready(function () {
 
     $('#boton_iniciar').on("keydown", function (event) {
       if (event.which == 13) {
-        addWord = App.elegirPalabra()
+        App.elegirPalabra().then((res, err) => {
+          if(!err){
+            $('#probar_letra').on("keydown", function (event) {
+              if (event.which == 13) {
+                App._probarLetra(event);
+              }
+            });
+        
+            $('#adivinar').on("keydown", function (event) {
+              if (event.which == 13) {
+                App._adivinar(event);
+              }
+            });
+          }
+
+        })
       }
     });
 
-    $('#probar_letra').on("keydown", function (event) {
-      if (event.which == 13) {
-        App._probarLetra(addWord);
-      }
-    });
-
-    $('#adivinar').on("keydown", function (event) {
-      if (event.which == 13) {
-        App._adivinar();
-      }
-    });
+    
   }
   main();
 });
