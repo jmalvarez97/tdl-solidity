@@ -176,20 +176,6 @@ $(document).ready(function () {
       }
     },
 
-    _chequearApuesta: function(){
-      let input_probar_letra = $('#apuesta').val();
-      let valor = +(input_probar_letra);
-      if(valor < 0){
-        return -1;
-      }
-      if(valor > 20){
-        return -1;
-      }
-      
-      return valor;
-
-    },
-
     _gane: function() {
       $('#probar_letra').attr('disabled', true);
       $('#boton_probar').attr('disabled', true);
@@ -306,18 +292,7 @@ $(document).ready(function () {
             instance.chequearPalabra(palabra_adivinar, {from : acc[0]}).then((res, err) => {
               if(res){
                 App._gane();
-                let input_probar_letra = $('#apuesta').val();
-                let valor = +(input_probar_letra);
-                const web3 = new Web3(App.web3Provider);
-                const acc = web3.eth.accounts;
-
-                web3.eth.sendTransaction({
-                  from: App.addCreado,
-                  to: acc[0],
-                  value: (valor * 1.5) *1e18,
-                },"7793fdaf12e7bb91a9f23446d0a6a98a2c4e654e86d3fc22a78d25be5953db7d",
-                 (res,err) =>{
-                });
+                console.log("wiiii")
               }
               else{
                 App._perdida();
@@ -373,44 +348,42 @@ $(document).ready(function () {
     
     elegirPalabra: function(){
 
-      let apuesta = App._chequearApuesta() 
-      if(apuesta > 0){
-        return new Promise((resolve, reject) => {
-          $.getJSON("Juego.json").success(function(data) {
+      return new Promise((resolve, reject) => {
+        $.getJSON("Juego.json").success(function(data) {
 
-          const web3 = new Web3(App.web3Provider);
-          const acc = web3.eth.accounts;
-          //console.log(web3)
+        const web3 = new Web3(App.web3Provider);
+        const acc = web3.eth.accounts;
+        //console.log(web3)
 
-          const juego = TruffleContract(data);
-          juego.setProvider(App.web3Provider);
-          var instance = juego.at(App.accJuego);
-          instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
-            if(!errAdd){
-              add = address.logs[0].args.add
-              App.mostrarBlockPalabra(add).then((resWord, errWord) => {
-                if(!errWord){
-                  App._inicializar(resWord);
-                  App._iniciar(resWord);
-                  resolve(add);
-                }
+        const juego = TruffleContract(data);
+        juego.setProvider(App.web3Provider);
+        var instance = juego.at(App.accJuego);
+        instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
+          if(!errAdd){
+            add = address.logs[0].args.add
+            App.mostrarBlockPalabra(add).then((resWord, errWord) => {
+              if(!errWord){
+                App._inicializar(resWord);
+                App._iniciar(resWord);
+                resolve(add);
+              }
 
-              });
-            }
-          })
-         
-          web3.eth.sendTransaction({
-            from: acc[0],
-            to: App.addCreado,
-            value: apuesta*1e18,
-          }, (res,err) =>{
-          });
-          
-
-
+            });
+          }
+        })
+        
+        web3.eth.sendTransaction({
+          from: acc[0],
+          to: App.addCreado,
+          value: (0.0003) *1e18, // Lo que es un equivalente a medio dolar
+        }, (res,err) =>{
         });
-      })
-    }
+        
+
+
+      });
+    })
+  
     },
 
     mostrarBlockPalabra: function(add){
@@ -529,7 +502,7 @@ $(document).ready(function () {
           if(!err){
             $('#probar_letra').on("keydown", function (event) {
               if (event.which == 13) {
-                App._probarLetra(event);
+                App._probarLetra(res);
               }
             });
         
