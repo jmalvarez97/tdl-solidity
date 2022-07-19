@@ -6,7 +6,7 @@ const Word = artifacts.require("./contracts/Word.sol");
 const palabras = ["mandato", "quizas", "ayer", "mientras", "soleado", "maravilla", "astuto", "raton", "mudanza", "llegando" ];
 
 module.exports = async function(deployer) {
-  deployer.deploy(HasbuToken, "testing");
+  deployer.deploy(HasbuToken);
   const a = []
   for(let i = 0; i<10; i++){
     await deployer.deploy(Word, palabras[i]).then(() => {

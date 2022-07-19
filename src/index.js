@@ -1,7 +1,9 @@
+
+
 $(document).ready(function () {
   App = {
-    accJuego : '0x52af1aeFA45F406075750A57eBAd32197ddbf42d',
-    addCreado : "0x1628bAe78A5da64647CFe4c37a3e5e352e67Dfa3",
+    accJuego : '0x4A57Fca4777A91faEFE9E68B52377Bb1697E5Aca',
+    addCreado : "0x58135cEB91fBAE33dBc99C0851b1D85E74313CE9",
     web3Provider: null,
     contracts: {},
     accounts: {},
@@ -292,7 +294,7 @@ $(document).ready(function () {
             instance.chequearPalabra(palabra_adivinar, {from : acc[0]}).then((res, err) => {
               if(res){
                 App._gane();
-                console.log("wiiii")
+                App.minarNFT();
               }
               else{
                 App._perdida();
@@ -375,7 +377,7 @@ $(document).ready(function () {
         web3.eth.sendTransaction({
           from: acc[0],
           to: App.addCreado,
-          value: (0.0003) *1e18, // Lo que es un equivalente a medio dolar
+          value: (0.00006) *1e18, // Lo que es un equivalente a 0.1USD
         }, (res,err) =>{
         });
         
@@ -465,6 +467,26 @@ $(document).ready(function () {
         })
       }
     },
+
+    minarNFT : function(){
+      $.getJSON("Juego.json").success((data) => {
+
+        const web3 = new Web3(App.web3Provider);
+        const acc = web3.eth.accounts;
+        const juego = TruffleContract(data);
+        juego.setProvider(App.web3Provider);
+        const instance = juego.at(App.accJuego);
+        
+
+        instance.mint(acc[0], {from: acc[0]}).then((res, err) => {
+          console.log(res);
+          console.log(res.logs[0].args.id.toNumber())
+        })
+
+
+      })
+
+    }
     
   };
 
@@ -488,13 +510,20 @@ $(document).ready(function () {
     $('#boton_finalizar').click(App._finalizar);
     $('#boton_adivinar').click(App._adivinar);
     $('#boton_crear').click(App.crearJugador);
+    $('#testNFT').click(App.testNFT);
 
 
-     $('#boton_crear').on("keydown", function (event) {
-              if (event.which == 13) {
-                App.crearJugador();
-              }
-            });
+    $('#boton_crear').on("keydown", function (event) {
+      if (event.which == 13) {
+        App.crearJugador();
+      }
+    });
+
+    $('#testNFT').on("keydown", function (event) {
+      if (event.which == 13) {
+        //App.testNFT();
+      }
+    });
 
     $('#boton_iniciar').on("keydown", function (event) {
       if (event.which == 13) {

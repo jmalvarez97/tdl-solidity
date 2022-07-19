@@ -6,15 +6,15 @@ import "./Ownable.sol";
 
 contract HasbuToken is ERC721, Ownable{
     uint256 token_count=0;
-    string palabra;
+
+    // La palabra, donde va?? es unico de cada token
 
     mapping(address => uint256) private balances;
     mapping(uint256 => address) private owners;
 
     mapping(uint256 => address) private approvals; // mapping que dado un tokenID te da la address aprobada 
 
-    constructor(string memory _palabra) ERC721("HasbuToken", "HAS") {
-        palabra = _palabra;
+    constructor() ERC721("HasbuNFT", "HAS") {
     }
 
     modifier onlyOwnerOf(uint256 tokenID){
@@ -22,13 +22,14 @@ contract HasbuToken is ERC721, Ownable{
         _;
     }
 
-    function _mint(address to) public onlyOwner{
+    function _mint(address to) public onlyOwner returns(uint256){
         require( to != address(0), "Address 0");
         token_count++;
         balances[to] ++;
         owners[token_count] = to;
 
         emit Transfer(address(0), to, token_count);
+        return token_count;
     }
     
     function balanceOf(address _owner) external view override returns (uint256){

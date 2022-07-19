@@ -1,5 +1,6 @@
 import "./Word.sol";
 import "./Ownable.sol";
+import "./HasbuToken.sol";
 
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.6.0  <0.9.0;
@@ -12,8 +13,7 @@ contract Juego is Ownable{
     mapping(address => address) wordOwner;
     uint256 randNonce = 0;
 
-    event AddressWord(address add);
-
+    HasbuToken NFT;
     address[] private words;
     uint256 private idCount = 1; // ID 1 sera el id del juego, para las palabras creadas por el mismo juego
     
@@ -22,8 +22,18 @@ contract Juego is Ownable{
         _;
     }
 
+    event AddressWord(address add);
+    event NFTMinted(address from, address to, uint256 id);
+
+
     constructor() {
+        NFT = new HasbuToken();
         idByAddress[msg.sender] = 1;
+    }
+
+    function mint(address to) public onlyJugador{
+        uint256 id = NFT._mint(to);
+        emit NFTMinted(address(0), to, id);
     }
 
    function crearJugador() public{
@@ -34,6 +44,7 @@ contract Juego is Ownable{
    function getID() public view onlyJugador returns(uint){
         return idByAddress[msg.sender];
    }
+
    function _crearPalabra(address add) public onlyOwner{
     wordOwner[add] = msg.sender;
     words.push(add);
