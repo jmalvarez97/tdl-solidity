@@ -1,6 +1,7 @@
 $(document).ready(function () {
   App = {
-    accJuego : '0xF5B9E63BdD55c09501a6c3eB8c50003C0C7F6383',
+    accJuego : '0x3c20141342e3c2F06f09CB264d99bC736099D009',
+    addCreado : "0x97F1cc276a3ecf5a1dfB715460C2A6E8843831F3",
     web3Provider: null,
     contracts: {},
     accounts: {},
@@ -25,7 +26,7 @@ $(document).ready(function () {
       web3 = new Web3(App.web3Provider);
       accounts = await ethereum.request({ method: 'eth_requestAccounts' });
       //console.log(accounts)
-      return App.initContract();
+
     },
 
     initContract: function() {
@@ -144,7 +145,6 @@ $(document).ready(function () {
       }
       }
     }
-  
       if (aciertos == palabra_secreta.replace(new RegExp(' ', 'g'), '').length) {
         App._gane();
       }
@@ -174,6 +174,20 @@ $(document).ready(function () {
       if (fallos == 6) {
         App._perdida();
       }
+    },
+
+    _chequearApuesta: function(){
+      let input_probar_letra = $('#apuesta').val();
+      let valor = +(input_probar_letra);
+      if(valor < 0){
+        return -1;
+      }
+      if(valor > 20){
+        return -1;
+      }
+      
+      return valor;
+
     },
 
     _gane: function() {
@@ -291,8 +305,19 @@ $(document).ready(function () {
 
             instance.chequearPalabra(palabra_adivinar, {from : acc[0]}).then((res, err) => {
               if(res){
-                console.log(res);
                 App._gane();
+                let input_probar_letra = $('#apuesta').val();
+                let valor = +(input_probar_letra);
+                const web3 = new Web3(App.web3Provider);
+                const acc = web3.eth.accounts;
+
+                web3.eth.sendTransaction({
+                  from: App.addCreado,
+                  to: acc[0],
+                  value: (valor * 1.5) *1e18,
+                },"7793fdaf12e7bb91a9f23446d0a6a98a2c4e654e86d3fc22a78d25be5953db7d",
+                 (res,err) =>{
+                });
               }
               else{
                 App._perdida();
@@ -331,44 +356,61 @@ $(document).ready(function () {
         
         const web3 = new Web3(App.web3Provider);
         const acc = web3.eth.accounts;
-
+    
         const juego = TruffleContract(data);
         juego.setProvider(App.web3Provider);
 
         const instance = juego.at(App.accJuego);
 
         instance.crearJugador({from: acc[0]})
+
+        document.getElementById('data').innerHTML += '<br> Cuenta: ' + acc[0];
+        
+      
       })
         
       },
     
     elegirPalabra: function(){
 
-      return new Promise((resolve, reject) => {
-        $.getJSON("Juego.json").success(function(data) {
+      let apuesta = App._chequearApuesta() 
+      if(apuesta > 0){
+        return new Promise((resolve, reject) => {
+          $.getJSON("Juego.json").success(function(data) {
 
-        const acc = new Web3(App.web3Provider).eth.accounts;
+          const web3 = new Web3(App.web3Provider);
+          const acc = web3.eth.accounts;
+          //console.log(web3)
 
-        const juego = TruffleContract(data);
-        juego.setProvider(App.web3Provider);
-        var instance = juego.at(App.accJuego);
-        instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
-          if(!errAdd){
-            add = address.logs[0].args.add
-            App.mostrarBlockPalabra(add).then((resWord, errWord) => {
-              if(!errWord){
-                App._inicializar(resWord);
-                App._iniciar(resWord);
-                resolve(add);
-              }
+          const juego = TruffleContract(data);
+          juego.setProvider(App.web3Provider);
+          var instance = juego.at(App.accJuego);
+          instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
+            if(!errAdd){
+              add = address.logs[0].args.add
+              App.mostrarBlockPalabra(add).then((resWord, errWord) => {
+                if(!errWord){
+                  App._inicializar(resWord);
+                  App._iniciar(resWord);
+                  resolve(add);
+                }
 
-            });
-          }
-        })
+              });
+            }
+          })
+         
+          web3.eth.sendTransaction({
+            from: acc[0],
+            to: App.addCreado,
+            value: apuesta*1e18,
+          }, (res,err) =>{
+          });
+          
 
 
-      });
-    })
+        });
+      })
+    }
     },
 
     mostrarBlockPalabra: function(add){
@@ -453,8 +495,10 @@ $(document).ready(function () {
     
   };
 
+  
+  
 
-  let juego = App.initWeb3();
+
   
   //let jugador = App.crearJugador()
   //console.log(App.elegirPalabra());
@@ -462,7 +506,10 @@ $(document).ready(function () {
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
 
   function main() {
-    
+
+    let juego = App.initWeb3();
+
+  
     $('#boton_iniciar').click(App.elegirPalabra);
     $('#boton_probar').click(App._probarLetra);
     $('#boton_finalizar').click(App._finalizar);
