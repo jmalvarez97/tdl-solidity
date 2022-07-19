@@ -1,7 +1,7 @@
 $(document).ready(function () {
   App = {
-    accJuego : '0x3c20141342e3c2F06f09CB264d99bC736099D009',
-    addCreado : "0x97F1cc276a3ecf5a1dfB715460C2A6E8843831F3",
+    accJuego : '0x52af1aeFA45F406075750A57eBAd32197ddbf42d',
+    addCreado : "0x1628bAe78A5da64647CFe4c37a3e5e352e67Dfa3",
     web3Provider: null,
     contracts: {},
     accounts: {},
