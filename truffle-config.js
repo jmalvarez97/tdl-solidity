@@ -17,16 +17,11 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
- //const {url , mnemonic } = require("./secrets.json");
  const {url, mnemonic} = require("./secretsRinkeby.json")
  const HDWallet = require('@truffle/hdwallet-provider');
-// const infuraKey = "fj4jll3k.....";
-//
-// const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
-  contracts_build_directory: './contracts',
+  contracts_build_directory: './contracts/abis',
   networks: {
     development: {
       host: "127.0.0.1",
