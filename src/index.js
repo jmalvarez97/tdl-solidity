@@ -2,12 +2,11 @@
 
 $(document).ready(function () {
   App = {
-    accJuego : '0x71fd7F89ed0c103942474ee52994E5df19378AF1',
+    accJuego : '0xa09B6E0bE6E065d6dC5DA9a7d04340BE341bFA18',
     addCreado : "0x9b6F4b9F0cDEBde2062Ad901Bb1a7cf08f88E54B",
     web3Provider: null,
     contracts: {},
     accounts: {},
-    word : null,
 
     initWeb3: async function() {
       if (window.ethereum) {
@@ -292,7 +291,7 @@ $(document).ready(function () {
             instance.chequearPalabra(palabra_adivinar, {from : acc[0]}).then((res, err) => {
               if(res){
                 App._gane();
-                App.minarNFT();
+                App.minarNFT(palabra_adivinar);
               }
               else{
                 App._perdida();
@@ -465,8 +464,10 @@ $(document).ready(function () {
       }
     },
 
-    minarNFT : function(){
+    minarNFT : function(word){
       $.getJSON("Juego.json").success((data) => {
+
+        console.log(word);
 
         const web3 = new Web3(App.web3Provider);
         const acc = web3.eth.accounts;
@@ -475,7 +476,7 @@ $(document).ready(function () {
         const instance = juego.at(App.accJuego);
         
 
-        instance.mint(acc[0], {from: acc[0]}).then((res, err) => {
+        instance.mint(acc[0], word, {from: acc[0]}).then((res, err) => {
           console.log(res);
           console.log(res.logs[0].args.id.toNumber())
         })
@@ -518,7 +519,7 @@ $(document).ready(function () {
 
     $('#testNFT').on("keydown", function (event) {
       if (event.which == 13) {
-        App.minarNFT();
+        App.minarNFT("luchador");
       }
     });
 

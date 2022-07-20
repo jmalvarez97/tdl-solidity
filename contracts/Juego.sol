@@ -31,8 +31,8 @@ contract Juego is Ownable{
         idByAddress[msg.sender] = 1;
     }
 
-    function mint(address to) public onlyJugador{
-        uint256 id = NFT.mint(to);
+    function mint(address to, string memory word) public onlyJugador{
+        uint256 id = NFT.mint(to, word);
         emit NFTMinted(address(0), to, id);
     }
 

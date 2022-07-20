@@ -3,7 +3,7 @@ const ERC721 = artifacts.require("./contracts/ERC721.sol");
 const Juego = artifacts.require("./contracts/Juego.sol")
 const Word = artifacts.require("./contracts/Word.sol");
 
-const palabras = ["mandato"];
+const palabras = ["mandato", "quizas" , "ayer" , "maravilla", "luchador", "fortuna"];
 
 module.exports = async function(deployer) {
   deployer.deploy(HasbuToken);
