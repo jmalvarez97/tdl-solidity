@@ -17,6 +17,10 @@ contract HasbuToken is ERC721, Ownable{
 	        ipfs["maravilla"] =  "https://bafkreietnt364rkvlbq3rddnre25hzhzlmpceoiu6k63zujnq6vmyxlds4.ipfs.nftstorage.link/";
 	        ipfs["luchador"]  =  "https://bafkreieehhvhuvklukffyhyhrsy752gxvkxuhvckrtjuuw7jih2up357ni.ipfs.nftstorage.link/";
 	        ipfs["fortuna"]   =  "https://bafkreig4n5sr7plgif4racoasn33j7hgojhd74a3bm6ckoco2xlkmcipaa.ipfs.nftstorage.link/";
+          ipfs["camioneta"] =  "https://bafkreie426fikitaxbwnoinxltgmj7g5kshj6le6cmpivwb4ivucbhwjim.ipfs.nftstorage.link/";
+	        ipfs["comodo"]    =  "https://bafkreieoxqfwl3tcnlv4zaqleb3dewqjhjptdi4swzurqkotman3m5eal4.ipfs.nftstorage.link/";
+	        ipfs["fuerza"]    =  "https://bafkreidh2yz4scpuww5cz6fbxvo22ppiugt5gxx35oywl7onzhpile2yi4.ipfs.nftstorage.link/";
+  	      ipfs["argentina"] =  "https://bafkreiegivllnqv6ryndbh634ojiifxrinpc64qxvy3mbpdf5ahw4lz3l4.ipfs.nftstorage.link/";
     }
 
 
