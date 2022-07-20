@@ -17,8 +17,9 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
-
-// const HDWallet = require('truffle-hdwallet-provider');
+ //const {url , mnemonic } = require("./secrets.json");
+ const {url, mnemonic} = require("./secretsRinkeby.json")
+ const HDWallet = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
 // const fs = require('fs');
@@ -32,11 +33,37 @@ module.exports = {
       port: 8545,
       network_id: "5777",
     },
+    goerli: {
+        provider: () => { return new HDWallet(mnemonic, url) },
+        network_id: "5",
+        gas : 5500000,
+        confirmations: 2,
+        networkCheckTimeoutnetworkCheckTimeout: 10000,
+        timeoutBlocks: 200
   },
+    ropsten: {
+      provider: () => { return new HDWallet(mnemonic, url) },
+      network_id: 3,
+      gas : 5500000,
+      confirmations: 2,        // Ropsten has a lower block limit than mainnet
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true
+    },
+
+    rinkeby: {
+      provider: () => { return new HDWallet(mnemonic, url) },
+      network_id: 4,
+      gas : 5500000,
+      confirmations: 2,        // Ropsten has a lower block limit than mainnet
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true
+    }
+
+},
 
   compilers: {
     solc: {
-      version: "0.8.15"
+      version: "0.8.7"
     }
   }
 };

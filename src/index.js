@@ -2,8 +2,8 @@
 
 $(document).ready(function () {
   App = {
-    accJuego : '0x4A57Fca4777A91faEFE9E68B52377Bb1697E5Aca',
-    addCreado : "0x58135cEB91fBAE33dBc99C0851b1D85E74313CE9",
+    accJuego : '0x71fd7F89ed0c103942474ee52994E5df19378AF1',
+    addCreado : "0x9b6F4b9F0cDEBde2062Ad901Bb1a7cf08f88E54B",
     web3Provider: null,
     contracts: {},
     accounts: {},
@@ -23,11 +23,10 @@ $(document).ready(function () {
       }
       else {
         App.web3Provider = new Web3.providers
-            .HttpProvider('http://localhost:8545');
+            .HttpProvider('https://rinkeby.infura.io/v3/4607a49ac0fd47dcb74f6282b60d18ff');
       }
       web3 = new Web3(App.web3Provider);
       accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      //console.log(accounts)
 
     },
 
@@ -73,7 +72,6 @@ $(document).ready(function () {
       }
     },
 
-  
     _verificarLetra: function(letra) {
       letra = letra.toLowerCase();
 
@@ -327,7 +325,6 @@ $(document).ready(function () {
       App._inicializar();
     },
 
-    
     crearJugador: function(){
       $.getJSON("Juego.json", function(data){
         
@@ -510,7 +507,7 @@ $(document).ready(function () {
     $('#boton_finalizar').click(App._finalizar);
     $('#boton_adivinar').click(App._adivinar);
     $('#boton_crear').click(App.crearJugador);
-    $('#testNFT').click(App.testNFT);
+    $('#testNFT').click(App.minarNFT);
 
 
     $('#boton_crear').on("keydown", function (event) {
@@ -521,7 +518,7 @@ $(document).ready(function () {
 
     $('#testNFT').on("keydown", function (event) {
       if (event.which == 13) {
-        //App.testNFT();
+        App.minarNFT();
       }
     });
 

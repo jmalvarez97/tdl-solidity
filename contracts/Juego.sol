@@ -32,7 +32,7 @@ contract Juego is Ownable{
     }
 
     function mint(address to) public onlyJugador{
-        uint256 id = NFT._mint(to);
+        uint256 id = NFT.mint(to);
         emit NFTMinted(address(0), to, id);
     }
 
