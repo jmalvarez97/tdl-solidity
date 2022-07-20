@@ -9,8 +9,8 @@ pragma solidity >=0.6.0  <0.9.0;
 
 
 contract Juego is Ownable{
+
     mapping(address => uint) idByAddress;
-    mapping(address => address) wordOwner;
     uint256 randNonce = 0;
 
     HasbuToken NFT;
@@ -31,49 +31,50 @@ contract Juego is Ownable{
         idByAddress[msg.sender] = 1;
     }
 
+     /**
+     * funcion que hace un nft con la palabra adivinada
+     * Solo los que se registren como jugadores pueden llamar
+     */
     function mint(address to, string memory word) public onlyJugador{
         uint256 id = NFT.mint(to, word);
         emit NFTMinted(address(0), to, id);
     }
 
-   function crearJugador() public{
-       idCount++;
-       idByAddress[msg.sender] = idCount;
-   }
+    
+     /**
+     * funcion para crear un jugador, cualquiera puede llamarla
+     */
+    function crearJugador() public{
+        idCount++;
+        idByAddress[msg.sender] = idCount;
+}
 
-   function getID() public view onlyJugador returns(uint){
-        return idByAddress[msg.sender];
-   }
 
-   function _crearPalabra(address add) public onlyOwner{
-    wordOwner[add] = msg.sender;
-    words.push(add);
-   }
-
-    function crearPalabra(string memory str) public onlyJugador{
-        // Modificador: solo id jugador puede llamar a esto
-        Word word = new Word(str);
-        wordOwner[address(word)] = msg.sender;
-        words.push(address(word));
+    /**
+    * funcion auxiliar para agregar palabras, solo puede usarla el dueño del contrato
+    */
+    function _crearPalabra(address add, string memory word, string memory uri) public onlyOwner{
+        words.push(add);
+        NFT.addWord(word, uri);
     }
 
-
+    /**
+    * funcion para elegir una palabra al azar
+    */
     function _elegirPalabra(address sender) private returns(address){
         require(words.length > 0); // Nos fijamos que haya alguna palabra antes
         uint indice = uint(keccak256(abi.encodePacked(randNonce, block.timestamp, sender))) %  words.length ;
         randNonce++;
         address addWord = words[indice];
-        require(wordOwner[addWord] != sender); // me fijo que la palabra asignada no sea creada por el jugador
         emit AddressWord(addWord);
         return addWord;
     }
 
+    /**
+    * wrapper de la funcion anterior, con el modificador que solo jugadores pueda llamar a esto
+    */
     function elegirPalabra() public onlyJugador returns(address){
         return _elegirPalabra(msg.sender);
-    }
-
-    function ping() public pure returns (string memory){
-        return "pong";
     }
 
     fallback() external payable{}

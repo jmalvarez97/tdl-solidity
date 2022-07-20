@@ -15,14 +15,9 @@ contract Word {
     event stringEmitted(string mask); 
 
 
-    function getLen() public view returns(uint){
-        return len;
-    }
-    
-    function getStr() public view returns (string memory){
-        return str;
-    }
-    
+    /**
+     * funcion para obtener un slice de un string
+     */
     function getSlice(uint256 begin, uint256 end, string memory text) private pure returns (string memory) {
         bytes memory a = new bytes(end-begin+1);
         for(uint i=0;i<=end-begin;i++){
@@ -31,11 +26,11 @@ contract Word {
         return string(a);    
     }
 
+    /**
+     * funcion que dada una letra devuelve una mascara con la letra si esta en esa posicion
+     * caso contrario devuelve -
+     */
     function index(string memory l) public returns(string memory){
-       // devuelve un array de longitud len donde hay un 0 si las letras no coinciden
-       // y 1 si coinciden
-
-       // todo: chequear que la palabra no sea creada por el que va a jugar
 
         string memory s;
         uint k=0;
@@ -54,6 +49,10 @@ contract Word {
         return mask;
         
     }
+
+    /**
+     * retorna un booleano al ver si coinciden los strings
+     */
 
     function chequearPalabra(string memory p) public view returns (bool){
         return (keccak256(bytes(p)) == keccak256(bytes(str)));

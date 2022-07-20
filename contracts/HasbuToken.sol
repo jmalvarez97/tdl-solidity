@@ -19,6 +19,11 @@ contract HasbuToken is ERC721, Ownable{
 	        ipfs["fortuna"]   =  "https://bafkreig4n5sr7plgif4racoasn33j7hgojhd74a3bm6ckoco2xlkmcipaa.ipfs.nftstorage.link/";
     }
 
+
+
+  /**
+    * Crea un numero NFT en la address dada, solo el dueño del contrato puede llamar a esto
+    */
     function mint(address to, string memory palabra) public onlyOwner returns(uint256){
         token_count++;
         _mint(to, token_count);
@@ -28,13 +33,21 @@ contract HasbuToken is ERC721, Ownable{
         return token_count;
     }
 
+
+     /**
+    * override para setear un propio URI
+    */
       function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
         return ipfs[str];
     }
 
-      function addWord(string memory word, string memory url) public onlyOwner{
-        ipfs[word] = url;
+
+  /**
+    * funcion para agregar el URI de una palabra nueva
+    */
+      function addWord(string memory word, string memory uri) public onlyOwner{
+        ipfs[word] = uri;
     }
 
 
