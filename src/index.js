@@ -1,7 +1,6 @@
-
-
 $(document).ready(function () {
   let fallos, aciertos, palabra_secreta, letras_probadas, letras_fallidas;
+  let costoJuego = 0.00006;
   Front = {
     
     _cadenaPermitida:  function(cadena) {
@@ -219,13 +218,19 @@ $(document).ready(function () {
       }
     },
 
+    mostrarData: function(instance){
+      instance.balanceOf.call(acc[0]).then((res, err) =>{
+        document.getElementById('data').innerHTML = '<br> Cuenta: ' + acc[0]+ "<br> # NFT's : " + res;
+      })
+    },
+
 
   }
 
 
   App = {
-    accJuego : '0xa09B6E0bE6E065d6dC5DA9a7d04340BE341bFA18',
-    addCreado : "0x9b6F4b9F0cDEBde2062Ad901Bb1a7cf08f88E54B",
+    accJuego : '0x0566CD6CBb5589Ee638a6d183ac75B38e040C16F',
+    addCreado : "0xb5Cef97dc045FAD4cE8D1f0fECbA4424f4bC1428",
     web3Provider: null,
     contracts: {},
     accounts: {},
@@ -426,13 +431,15 @@ $(document).ready(function () {
 
           acc = res[0];
           instance = res[1];
+          Front.mostrarData(instance)
           instance.crearJugador({from: acc[0]})
-          document.getElementById('data').innerHTML = '<br> Cuenta: ' + acc[0];
-        
+          
       })
       
         
       },
+
+ 
 
     elegirPalabra: function(){
 
@@ -444,26 +451,29 @@ $(document).ready(function () {
           instance = res[1];
           web3 = res[2];
 
-        web3.eth.sendTransaction(
-          { from: acc[0], to: App.addCreado, value: (0.00006) *1e18}, 
-            (err,res) =>{
-              if(res){ 
-                instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
-                if(!errAdd){
-                  add = address.logs[0].args.add
-                  App.mostrarBlockPalabra(add).then((resWord, errWord) => {
-                    if(!errWord){
-                      Front._inicializar(resWord);
-                      Front._iniciar(resWord);
-                      resolve(add);
-                    }
+          Front.mostrarData(instance);
 
-            });
-          }
-        })}
-      });
-        
-    })
+          
+          web3.eth.sendTransaction(
+            { from: acc[0], to: App.addCreado, value: (costoJuego) *1e18}, 
+              (err,res) =>{
+                if(res){ 
+                  instance.elegirPalabra({from: acc[0]}).then((address, errAdd) =>{
+                  if(!errAdd){
+                    add = address.logs[0].args.add
+                    App.mostrarBlockPalabra(add).then((resWord, errWord) => {
+                      if(!errWord){
+                        Front._inicializar(resWord);
+                        Front._iniciar(resWord);
+                        resolve(add);
+                      }
+
+              });
+            }
+          })}
+        });
+          
+      })
     })
   
     },
@@ -474,6 +484,8 @@ $(document).ready(function () {
           
           acc = res[0];
           instance = res[1];
+
+
   
         instance.getStr.call({from: acc[0]}).then((res) => {
           resolve(res);
@@ -490,8 +502,8 @@ $(document).ready(function () {
           instance = res[1];
 
           instance.mint(acc[0], word, {from: acc[0]}).then((res, err) => {
-            console.log(res);
-            console.log(res.logs[0].args.id.toNumber())
+            Front.mostrarData(instance);
+            
         })
       })
 

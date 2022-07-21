@@ -45,6 +45,7 @@ contract Juego is Ownable{
      * funcion para crear un jugador, cualquiera puede llamarla
      */
     function crearJugador() public{
+        require(idByAddress[msg.sender] == 0, "este usuario ya existe!");
         idCount++;
         idByAddress[msg.sender] = idCount;
 }
@@ -75,6 +76,13 @@ contract Juego is Ownable{
     */
     function elegirPalabra() public onlyJugador returns(address){
         return _elegirPalabra(msg.sender);
+    }
+
+    /**
+    * funcion para ver la cantidad de nft tiene el usuario que juega
+    */
+    function balanceOf(address add) public view returns(uint256){
+        return NFT.balanceOf(add);
     }
 
     fallback() external payable{}

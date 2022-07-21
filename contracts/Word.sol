@@ -57,4 +57,11 @@ contract Word {
     function chequearPalabra(string memory p) public view returns (bool){
         return (keccak256(bytes(p)) == keccak256(bytes(str)));
     }
+
+
+
+    
+      function getStr() public view returns (string memory){
+        return str;
+    }
 }

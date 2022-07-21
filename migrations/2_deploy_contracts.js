@@ -1,5 +1,4 @@
 const HasbuToken = artifacts.require("./contracts/HasbuToken.sol");
-const ERC721 = artifacts.require("./contracts/ERC721.sol");
 const Juego = artifacts.require("./contracts/Juego.sol")
 const Word = artifacts.require("./contracts/Word.sol");
 

@@ -4,3 +4,4 @@ node_modules
 secretsGoerli.json
 secretsRopsten.json
 secretsRinkeby.json
+mnemonics.txt

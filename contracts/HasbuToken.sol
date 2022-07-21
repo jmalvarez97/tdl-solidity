@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-import "./OpenZeppelin ERC721/ERC721/ERC721.sol";
+import "./OpenZeppelin/ERC721/ERC721.sol";
 import "./Ownable.sol";
 
 contract HasbuToken is ERC721, Ownable{
